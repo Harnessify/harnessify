@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "harnessify"
+version = "0.0.0"
+description = "Production-readiness harness for AI agents: evals, red-teaming, guardrails, traces, version comparison, promotion, rollback, and continuous hardening."
+requires-python = ">=3.11"
+license = "Apache-2.0"
+authors = [
+  { name = "Harnessify contributors" },
+]
