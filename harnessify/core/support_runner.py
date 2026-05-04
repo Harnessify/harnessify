@@ -7,7 +7,10 @@ from harnessify.adapters.callable_agent import run_callable_agent
 from harnessify.adapters.shell_agent import run_shell_agent
 from harnessify.config import load_config
 from harnessify.domains.support.policy import load_support_policy
-from harnessify.domains.support.registry import resolve_reference_agent
+from harnessify.domains.support.registry import (
+    resolve_deepagents_reference_agent,
+    resolve_reference_agent,
+)
 from harnessify.domains.support.schemas import SupportTicket
 
 
@@ -53,4 +56,12 @@ def run_support_agent(
         result["provider"] = "local"
         return result
 
-    raise ValueError(f"Unknown adapter '{adapter}'. Available: callable, shell")
+    if adapter == "deepagents":
+        deepagents_agent = resolve_deepagents_reference_agent(agent_impl)
+        result = run_callable_agent(deepagents_agent, ticket=ticket, policy=policy, run_id=run_id)
+        result["adapter"] = "deepagents"
+        result["runtime"] = agent_impl
+        result["provider"] = "deepagents"
+        return result
+
+    raise ValueError(f"Unknown adapter '{adapter}'. Available: callable, shell, deepagents")

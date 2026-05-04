@@ -100,6 +100,16 @@ The OSS CLI is the adoption wedge.
 - [Deep Agents](docs/deepagents.md)
 - [Cloud](docs/cloud.md)
 
+## Deep Agents Example
+
+There is now a real Deep Agents support refund example under [examples/deepagents/support_refund/README.md](examples/deepagents/support_refund/README.md).
+
+It uses:
+
+- `deepagents` as the runtime
+- Harnessify as the readiness layer
+- the existing support refund domain pack and readiness flow
+
 ## License
 
 Apache-2.0

@@ -88,3 +88,19 @@ The first Deep Agents milestone should be modest:
 - one readiness report flow
 - no auto-remediation
 - no deep coupling to LangGraph internals
+
+## Current Repo Path
+
+The repo now includes:
+
+- a thin adapter in `harnessify/adapters/deepagents.py`
+- a support refund reference implementation in `harnessify/domains/support/reference_agents/deepagents_support_refund.py`
+- a runnable example under `examples/deepagents/support_refund/`
+
+The intended flow is:
+
+```bash
+hfy support eval --agent-version deep-v1 --agent-impl deepagents_support_refund --adapter deepagents
+hfy support redteam --agent-version deep-v1 --agent-impl deepagents_support_refund --adapter deepagents
+hfy support readiness --agent-version deep-v1
+```
