@@ -8,6 +8,7 @@ The adapter story only works if the repo also includes reference agents for real
 
 - `callable`: wrap a Python callable directly
 - `shell`: wrap a local shell-invoked agent process
+- `Deep Agents`: wrap a Deep Agents runtime object via `.invoke(...)`
 - `OpenAI-compatible`: target local or remote OpenAI-style endpoints
 - `PyFlue`: future thin adapter
 - `LangGraph`: future thin adapter
@@ -18,6 +19,12 @@ Today, the support refund domain can already run through:
 
 - `callable` with the in-process deterministic reference agent
 - `shell` with the same reference agent executed as an external process
+
+The next runtime path is Deep Agents:
+
+- wrap a Deep Agents runtime object
+- keep Harnessify at the input/output boundary
+- treat Deep Agents as the runtime and Harnessify as the readiness layer
 
 ## Reference Agents vs Bring-Your-Own Agents
 
