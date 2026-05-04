@@ -9,7 +9,7 @@ The adapter story only works if the repo also includes reference agents for real
 - `callable`: wrap a Python callable directly
 - `shell`: wrap a local shell-invoked agent process
 - `Deep Agents`: wrap a Deep Agents runtime object via `.invoke(...)`
-- `OpenAI-compatible`: target local or remote OpenAI-style endpoints
+- `OpenAI-compatible`: target local or remote OpenAI-style endpoints, including llama.cpp
 - `PyFlue`: future thin adapter
 - `LangGraph`: future thin adapter
 - `Hermes`: future thin adapter
@@ -19,6 +19,7 @@ Today, the support refund domain can already run through:
 
 - `callable` with the in-process deterministic reference agent
 - `shell` with the same reference agent executed as an external process
+- `openai-compatible` with the support refund prompt sent to `/v1/chat/completions`
 
 The next runtime path is Deep Agents:
 

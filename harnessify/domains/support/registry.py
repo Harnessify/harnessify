@@ -6,6 +6,7 @@ from harnessify.domains.support.reference_agents import (
     bad_candidate_v2,
     deepagents_support_refund,
     deterministic_v1,
+    openai_compatible_support_refund,
 )
 
 
@@ -19,6 +20,10 @@ REFERENCE_AGENT_IMPLS: dict[str, SupportAgentCallable] = {
 
 DEEPAGENTS_AGENT_IMPLS: dict[str, SupportAgentCallable] = {
     "deepagents_support_refund": deepagents_support_refund.run,
+}
+
+OPENAI_COMPATIBLE_AGENT_IMPLS: dict[str, SupportAgentCallable] = {
+    "openai_compatible_support_refund": openai_compatible_support_refund.run,
 }
 
 
@@ -46,3 +51,17 @@ def resolve_deepagents_reference_agent(agent_impl: str) -> SupportAgentCallable:
 
 def list_deepagents_reference_agents() -> list[str]:
     return sorted(DEEPAGENTS_AGENT_IMPLS)
+
+
+def resolve_openai_compatible_reference_agent(agent_impl: str) -> SupportAgentCallable:
+    try:
+        return OPENAI_COMPATIBLE_AGENT_IMPLS[agent_impl]
+    except KeyError as exc:
+        available = ", ".join(sorted(OPENAI_COMPATIBLE_AGENT_IMPLS))
+        raise ValueError(
+            f"Unknown OpenAI-compatible support implementation '{agent_impl}'. Available: {available}"
+        ) from exc
+
+
+def list_openai_compatible_reference_agents() -> list[str]:
+    return sorted(OPENAI_COMPATIBLE_AGENT_IMPLS)

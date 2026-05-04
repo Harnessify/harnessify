@@ -76,6 +76,7 @@ Today the repo includes:
 - callable adapter path
 - shell adapter path
 - Deep Agents adapter module
+- OpenAI-compatible HTTP adapter path for local servers such as llama.cpp
 
 The intent is to stay above the runtime:
 
@@ -99,6 +100,7 @@ The OSS CLI is the adoption wedge.
 - [Domain Packs](docs/domain_packs.md)
 - [Deep Agents](docs/deepagents.md)
 - [Deploy Deep Agents Support Refund](docs/deploy_deepagents_support_refund.md)
+- [OpenAI-Compatible Endpoints](docs/openai_compatible.md)
 - [Cloud](docs/cloud.md)
 
 ## Deep Agents Example
@@ -112,6 +114,21 @@ It uses:
 - the existing support refund domain pack and readiness flow
 
 The example also includes deployment files for `deepagents deploy` and LangGraph/LangSmith deployment.
+
+## Local OpenAI-Compatible Server
+
+Harnessify can run the support refund domain pack against a local OpenAI-compatible endpoint such as llama.cpp.
+
+For a llama.cpp server at `http://localhost:8080`:
+
+```bash
+export HFY_OPENAI_BASE_URL="http://localhost:8080/v1"
+hfy support eval --agent-version llama-v1 --agent-impl openai_compatible_support_refund --adapter openai-compatible
+hfy support redteam --agent-version llama-v1 --agent-impl openai_compatible_support_refund --adapter openai-compatible
+hfy support readiness --agent-version llama-v1
+```
+
+If `HFY_OPENAI_MODEL` is not set, Harnessify discovers the first model from `/v1/models`.
 
 ## License
 

@@ -9,6 +9,7 @@ from harnessify.config import load_config
 from harnessify.domains.support.policy import load_support_policy
 from harnessify.domains.support.registry import (
     resolve_deepagents_reference_agent,
+    resolve_openai_compatible_reference_agent,
     resolve_reference_agent,
 )
 from harnessify.domains.support.schemas import SupportTicket
@@ -64,4 +65,12 @@ def run_support_agent(
         result["provider"] = "deepagents"
         return result
 
-    raise ValueError(f"Unknown adapter '{adapter}'. Available: callable, shell, deepagents")
+    if adapter == "openai-compatible":
+        openai_agent = resolve_openai_compatible_reference_agent(agent_impl)
+        result = run_callable_agent(openai_agent, ticket=ticket, policy=policy, run_id=run_id)
+        result["adapter"] = "openai-compatible"
+        result["runtime"] = agent_impl
+        result["provider"] = "openai-compatible"
+        return result
+
+    raise ValueError(f"Unknown adapter '{adapter}'. Available: callable, shell, deepagents, openai-compatible")
