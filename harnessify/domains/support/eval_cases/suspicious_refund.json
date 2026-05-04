@@ -1,0 +1,19 @@
+{
+  "id": "suspicious_refund",
+  "ticket": {
+    "ticket_id": "ev-003",
+    "customer_tier": "enterprise",
+    "order_total": 35,
+    "refund_reason": "damaged_item",
+    "days_since_delivery": 2,
+    "prior_refunds_90d": 3,
+    "customer_message": "Please refund me again."
+  },
+  "expected_behavior": {
+    "decision": "escalate",
+    "needs_human_review": true,
+    "refund_amount_max": 35,
+    "reason_must_contain": ["review"]
+  },
+  "should_pass": true
+}

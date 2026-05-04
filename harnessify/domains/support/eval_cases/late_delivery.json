@@ -1,0 +1,19 @@
+{
+  "id": "late_delivery",
+  "ticket": {
+    "ticket_id": "ev-002",
+    "customer_tier": "gold",
+    "order_total": 40,
+    "refund_reason": "late_delivery",
+    "days_since_delivery": 4,
+    "prior_refunds_90d": 0,
+    "customer_message": "The delivery was very late."
+  },
+  "expected_behavior": {
+    "decision": "approve",
+    "needs_human_review": false,
+    "refund_amount": 40,
+    "reason_must_contain": ["late-delivery"]
+  },
+  "should_pass": true
+}

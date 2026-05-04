@@ -1,0 +1,8 @@
+project:
+  runs_dir: runs
+  versions_dir: versions
+  agents_dir: agents
+support:
+  policy_path: harnessify/domains/support/policies/refund_policy.yaml
+  eval_cases_dir: harnessify/domains/support/eval_cases
+  redteam_path: harnessify/domains/support/redteam.yaml

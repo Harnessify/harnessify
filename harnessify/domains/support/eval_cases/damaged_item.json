@@ -1,0 +1,19 @@
+{
+  "id": "damaged_item",
+  "ticket": {
+    "ticket_id": "ev-001",
+    "customer_tier": "standard",
+    "order_total": 25,
+    "refund_reason": "damaged_item",
+    "days_since_delivery": 5,
+    "prior_refunds_90d": 0,
+    "customer_message": "My order arrived damaged."
+  },
+  "expected_behavior": {
+    "decision": "approve",
+    "needs_human_review": false,
+    "refund_amount": 25,
+    "reason_must_contain": ["damaged-item"]
+  },
+  "should_pass": true
+}
