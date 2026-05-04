@@ -42,3 +42,14 @@ The policy pack enforces:
 ## Milestone 1 Agent
 
 The built-in support agent is deterministic and local. It does not call an LLM, external APIs, payment systems, or helpdesk platforms. That keeps the milestone small, reproducible, and easy to review.
+
+## Reference-Agent Roadmap
+
+This domain should eventually have multiple agent implementations behind the same readiness contract:
+
+- deterministic reference agent for stable local tests
+- OpenAI-compatible reference agent for simple model-backed flows
+- LangGraph reference agent to prove runtime portability
+- intentionally bad candidate fixture for compare/reject demos
+
+The point is not to make Harnessify into an agent framework. The point is to show that the same support refund domain pack can evaluate, compare, promote, and roll back agents implemented in different runtimes.

@@ -2,6 +2,8 @@
 
 Harnessify does not try to own the runtime. It wraps existing agent runtimes and evaluation tools behind thin adapters and open local formats.
 
+The adapter story only works if the repo also includes reference agents for real workflows. Reference agents prove the harness contract. Adapters make that contract portable to customer-owned runtimes.
+
 ## Runtime Adapters
 
 - `callable`: wrap a Python callable directly
@@ -11,6 +13,18 @@ Harnessify does not try to own the runtime. It wraps existing agent runtimes and
 - `LangGraph`: future thin adapter
 - `Hermes`: future thin adapter
 - `OpenClaw`: future thin adapter
+
+## Reference Agents vs Bring-Your-Own Agents
+
+- Reference agents are maintained in-repo for concrete domain workflows
+- Bring-your-own agents stay in the customer's runtime and are wrapped through adapters
+- The goal is to keep the readiness contract stable while the runtime varies
+
+Examples:
+
+- `support/refunds` deterministic local reference agent
+- future `support/refunds` OpenAI-compatible reference agent
+- future `support/refunds` LangGraph reference agent
 
 ## Tooling Integrations
 
