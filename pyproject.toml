@@ -29,7 +29,14 @@ guardrails = []
 sandbox = []
 tracking = []
 git = []
-all = []
+deepagents = [
+  "deepagents",
+  "langchain-openai",
+]
+all = [
+  "deepagents",
+  "langchain-openai",
+]
 
 [project.scripts]
 hfy = "harnessify.cli:main"

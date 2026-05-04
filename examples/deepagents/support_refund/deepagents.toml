@@ -1,0 +1,6 @@
+[agent]
+name = "harnessify-support-refund"
+model = "openai:gpt-5.4"
+
+[sandbox]
+provider = "none"

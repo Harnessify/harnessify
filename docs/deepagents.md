@@ -96,6 +96,7 @@ The repo now includes:
 - a thin adapter in `harnessify/adapters/deepagents.py`
 - a support refund reference implementation in `harnessify/domains/support/reference_agents/deepagents_support_refund.py`
 - a runnable example under `examples/deepagents/support_refund/`
+- a deployment guide in `docs/deploy_deepagents_support_refund.md`
 
 The intended flow is:
 
@@ -104,3 +105,5 @@ hfy support eval --agent-version deep-v1 --agent-impl deepagents_support_refund 
 hfy support redteam --agent-version deep-v1 --agent-impl deepagents_support_refund --adapter deepagents
 hfy support readiness --agent-version deep-v1
 ```
+
+For cloud deployment details, see `docs/deploy_deepagents_support_refund.md`.

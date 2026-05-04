@@ -18,7 +18,7 @@ export HFY_DEEPAGENTS_MODEL="openai:gpt-5.4"
 export OPENAI_API_KEY="..."
 ```
 
-## Run The Harness
+## Run Locally Through Harnessify
 
 From the repo root:
 
@@ -37,6 +37,36 @@ hfy support redteam --agent-version v1
 hfy support readiness --agent-version v1
 hfy support compare --base v1 --candidate deep-v1
 ```
+
+## Run As A Deep Agents Project
+
+This directory is also a Deep Agents project:
+
+- `deepagents.toml` configures the deployable agent
+- `AGENTS.md` defines the support refund instructions
+- `langgraph.json` exposes `agent.py:agent` for LangGraph/LangSmith style deployment
+- `.env.example` lists required runtime credentials
+
+Create a local `.env` from the example and fill in credentials:
+
+```bash
+cd examples/deepagents/support_refund
+cp .env.example .env
+```
+
+Run the Deep Agents dev server:
+
+```bash
+uvx deepagents-cli dev --config deepagents.toml --port 2024
+```
+
+Deploy to LangSmith Deployment with the Deep Agents CLI:
+
+```bash
+uvx deepagents-cli deploy --config deepagents.toml
+```
+
+You need a valid `LANGSMITH_API_KEY` and model-provider credentials before deployment will work.
 
 ## Notes
 

@@ -98,6 +98,7 @@ The OSS CLI is the adoption wedge.
 - [Support Domain](docs/support_domain.md)
 - [Domain Packs](docs/domain_packs.md)
 - [Deep Agents](docs/deepagents.md)
+- [Deploy Deep Agents Support Refund](docs/deploy_deepagents_support_refund.md)
 - [Cloud](docs/cloud.md)
 
 ## Deep Agents Example
@@ -109,6 +110,8 @@ It uses:
 - `deepagents` as the runtime
 - Harnessify as the readiness layer
 - the existing support refund domain pack and readiness flow
+
+The example also includes deployment files for `deepagents deploy` and LangGraph/LangSmith deployment.
 
 ## License
 
