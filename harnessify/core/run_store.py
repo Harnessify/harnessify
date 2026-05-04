@@ -59,6 +59,14 @@ def read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def read_jsonl(path: Path) -> list[Any]:
+    rows = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            rows.append(json.loads(line))
+    return rows
+
+
 def write_jsonl(path: Path, rows: Iterable[dict[str, Any] | str]) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
     lines = []

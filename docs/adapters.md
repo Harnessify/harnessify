@@ -14,6 +14,11 @@ The adapter story only works if the repo also includes reference agents for real
 - `Hermes`: future thin adapter
 - `OpenClaw`: future thin adapter
 
+Today, the support refund domain can already run through:
+
+- `callable` with the in-process deterministic reference agent
+- `shell` with the same reference agent executed as an external process
+
 ## Reference Agents vs Bring-Your-Own Agents
 
 - Reference agents are maintained in-repo for concrete domain workflows
@@ -42,4 +47,5 @@ Examples:
 - Keep every adapter thin.
 - Do not make optional tools mandatory.
 - Fail gracefully with a clear `not installed` message when a dependency is unavailable.
-- Keep the local deterministic support agent as the only built-in runtime for this milestone.
+- Keep the local deterministic support agent as the default built-in runtime for this milestone.
+- Prove portability by running the same domain pack through more than one adapter path.

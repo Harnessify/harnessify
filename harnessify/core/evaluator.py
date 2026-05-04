@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from harnessify.adapters.callable_agent import run_callable_agent
 from harnessify.config import load_config
 from harnessify.core.run_store import (
     create_run_dir,
@@ -13,8 +12,7 @@ from harnessify.core.run_store import (
     write_jsonl,
     write_markdown,
 )
-from harnessify.domains.support.demo_agent import evaluate_ticket
-from harnessify.domains.support.policy import load_support_policy
+from harnessify.core.support_runner import run_support_agent
 from harnessify.domains.support.schemas import EvalCase, RefundDecision, SupportTicket
 from harnessify.domains.support.scorer import score_expected_behavior
 from harnessify.formats.schemas import RunRecord, TraceEvent
@@ -30,9 +28,12 @@ def load_eval_cases(root: Path) -> list[EvalCase]:
     return cases
 
 
-def run_support_eval(root: Path, agent_version: str) -> dict:
-    config = load_config(root)
-    policy = load_support_policy(root / config.support.policy_path)
+def run_support_eval(
+    root: Path,
+    agent_version: str,
+    agent_impl: str = "deterministic_v1",
+    adapter: str = "callable",
+) -> dict:
     cases = load_eval_cases(root)
 
     run_results = []
@@ -42,7 +43,14 @@ def run_support_eval(root: Path, agent_version: str) -> dict:
         ticket = SupportTicket.model_validate(case.ticket.model_dump())
         write_json(run_dir / "input.json", ticket.model_dump())
 
-        agent_result = run_callable_agent(evaluate_ticket, ticket=ticket, policy=policy, run_id=run_id)
+        agent_result = run_support_agent(
+            root=root,
+            agent_impl=agent_impl,
+            adapter=adapter,
+            ticket=ticket,
+            run_id=run_id,
+            run_dir=run_dir,
+        )
         decision = RefundDecision.model_validate(agent_result["decision"])
         write_json(run_dir / "output.json", decision.model_dump())
 
@@ -81,9 +89,9 @@ def run_support_eval(root: Path, agent_version: str) -> dict:
             domain="support",
             case_id=case.id,
             agent_version=agent_version,
-            adapter="callable_agent",
-            runtime="deterministic_rules",
-            provider="local",
+            adapter=agent_result["adapter"],
+            runtime=agent_result["runtime"],
+            provider=agent_result["provider"],
             input_path=relative_to_root(run_dir / "input.json", root),
             output_path=relative_to_root(run_dir / "output.json", root),
             score=score_result["score"],
@@ -109,6 +117,8 @@ def run_support_eval(root: Path, agent_version: str) -> dict:
     guardrail_violations = sum(len(result["guardrail_violations"]) for result in run_results)
     summary = {
         "agent_version": agent_version,
+        "agent_impl": agent_impl,
+        "adapter": adapter,
         "kind": "eval",
         "total_cases": total_cases,
         "passed_cases": passed_cases,

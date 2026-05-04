@@ -4,8 +4,9 @@ from pathlib import Path
 
 import typer
 from rich.console import Console
+from rich.table import Table
 
-from harnessify.config import DEFAULT_CONFIG, load_config
+from harnessify.config import DEFAULT_CONFIG
 from harnessify.core.compare import compare_versions
 from harnessify.core.evaluator import run_support_eval
 from harnessify.core.promote import promote_support_agent
@@ -35,20 +36,32 @@ def init_command() -> None:
 
 
 @support_app.command("eval")
-def support_eval(agent_version: str = typer.Option(..., "--agent-version")) -> None:
+def support_eval(
+    agent_version: str = typer.Option(..., "--agent-version"),
+    agent_impl: str = typer.Option("deterministic_v1", "--agent-impl"),
+    adapter: str = typer.Option("callable", "--adapter"),
+) -> None:
     root = project_root()
     ensure_agent_version_manifest(root, agent_version)
-    summary = run_support_eval(root, agent_version)
+    summary = run_support_eval(root, agent_version, agent_impl=agent_impl, adapter=adapter)
     console.print(f"Support eval complete for {agent_version}.")
+    console.print(f"Agent implementation: {summary['agent_impl']}")
+    console.print(f"Adapter: {summary['adapter']}")
     console.print(f"Pass rate: {summary['pass_rate']:.2f}")
 
 
 @support_app.command("redteam")
-def support_redteam(agent_version: str = typer.Option(..., "--agent-version")) -> None:
+def support_redteam(
+    agent_version: str = typer.Option(..., "--agent-version"),
+    agent_impl: str = typer.Option("deterministic_v1", "--agent-impl"),
+    adapter: str = typer.Option("callable", "--adapter"),
+) -> None:
     root = project_root()
     ensure_agent_version_manifest(root, agent_version)
-    summary = run_support_redteam(root, agent_version)
+    summary = run_support_redteam(root, agent_version, agent_impl=agent_impl, adapter=adapter)
     console.print(f"Support red-team complete for {agent_version}.")
+    console.print(f"Agent implementation: {summary['agent_impl']}")
+    console.print(f"Adapter: {summary['adapter']}")
     console.print(f"Pass rate: {summary['pass_rate']:.2f}")
 
 
@@ -125,7 +138,47 @@ def support_compare(
     candidate: str = typer.Option(..., "--candidate"),
 ) -> None:
     root = project_root()
-    console.print(compare_versions(root, base, candidate))
+    comparison = compare_versions(root, base, candidate)
+    console.print(comparison["outcome"])
+
+    table = Table(title="Support Version Compare")
+    table.add_column("Metric")
+    table.add_column(f"Base ({base})", justify="right")
+    table.add_column(f"Candidate ({candidate})", justify="right")
+    table.add_column("Delta", justify="right")
+    table.add_row("agent_impl", str(comparison["base"]["agent_impl"]), str(comparison["candidate"]["agent_impl"]), "-")
+    table.add_row("adapter", str(comparison["base"]["adapter"]), str(comparison["candidate"]["adapter"]), "-")
+    table.add_row(
+        "eval_pass_rate",
+        f"{comparison['base']['eval_pass_rate']:.2f}",
+        f"{comparison['candidate']['eval_pass_rate']:.2f}",
+        f"{comparison['delta']['eval_pass_rate']:+.2f}",
+    )
+    table.add_row(
+        "redteam_pass_rate",
+        f"{comparison['base']['redteam_pass_rate']:.2f}",
+        f"{comparison['candidate']['redteam_pass_rate']:.2f}",
+        f"{comparison['delta']['redteam_pass_rate']:+.2f}",
+    )
+    table.add_row(
+        "high_severity_failures",
+        str(comparison["base"]["high_severity_failures"]),
+        str(comparison["candidate"]["high_severity_failures"]),
+        f"{comparison['delta']['high_severity_failures']:+d}",
+    )
+    table.add_row(
+        "guardrail_violations",
+        str(comparison["base"]["guardrail_violations"]),
+        str(comparison["candidate"]["guardrail_violations"]),
+        f"{comparison['delta']['guardrail_violations']:+d}",
+    )
+    table.add_row(
+        "recommendation",
+        str(comparison["base"]["recommendation"]),
+        str(comparison["candidate"]["recommendation"]),
+        "-",
+    )
+    console.print(table)
 
 
 @support_app.command("rollback")

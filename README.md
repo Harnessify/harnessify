@@ -105,8 +105,13 @@ The open-source CLI proves the workflow locally. The eventual cloud product shou
 pip install -e ".[dev]"
 hfy init
 hfy support eval --agent-version v1
+hfy support eval --agent-version v1 --adapter shell
+hfy support eval --agent-version v2 --agent-impl bad_candidate_v2
 hfy support redteam --agent-version v1
+hfy support redteam --agent-version v2 --agent-impl bad_candidate_v2
 hfy support readiness --agent-version v1
+hfy support readiness --agent-version v2
+hfy support compare --base v1 --candidate v2
 hfy support promote --agent-version v1 --env production
 hfy support rollback --to v1 --env production
 ```

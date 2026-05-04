@@ -48,6 +48,7 @@ The built-in support agent is deterministic and local. It does not call an LLM, 
 This domain should eventually have multiple agent implementations behind the same readiness contract:
 
 - deterministic reference agent for stable local tests
+- shell-executed deterministic reference agent for external runtime wrapping
 - OpenAI-compatible reference agent for simple model-backed flows
 - LangGraph reference agent to prove runtime portability
 - intentionally bad candidate fixture for compare/reject demos
